@@ -28,10 +28,13 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 	@Override
 	public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer, ExistingFileHelper existingFileHelper) {
 		AdvancementHolder farmersDelight = Advancement.Builder.advancement()
-				.display(ModItems.COOKING_POT.get(),
+				// 26.3 里 Advancement.Builder#display 不再收背景，只有根进度用 rootDisplay(...)。
+				// 而且背景 id 是「短形式」——ClientAsset.ResourceTexture 会自己补 textures/ 前缀和 .png 后缀，
+				// 写成完整的 minecraft:textures/block/bricks.png 会被拼成 .../textures/textures/block/bricks.png.png。
+				.rootDisplay(ModItems.COOKING_POT.get(),
 						TextUtils.advancement("root.title"),
 						TextUtils.advancement("root.description"),
-						Identifier.parse("minecraft:textures/block/bricks.png"),
+						Identifier.parse("minecraft:block/bricks"),
 						AdvancementType.TASK, false, false, false)
 				.addCriterion("seeds", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
 				.save(consumer, getNameId("main/root"));

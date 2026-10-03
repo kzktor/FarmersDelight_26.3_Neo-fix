@@ -3,6 +3,7 @@ package vectorwing.farmersdelight.common.world.modifier;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -23,8 +24,10 @@ public record AddFeaturesByFilterBiomeModifier(
 ) implements BiomeModifier
 {
 
+	// 26.3.0.40-beta 给 BiomeModifier#modify 加了一个 RegistryAccess 首参（0.0/0.3-beta 时还没有）。
+	// 这个实现用不到注册表，参数直接忽略。
 	@Override
-	public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+	public void modify(RegistryAccess registries, Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
 		if (phase == Phase.ADD && this.allowedBiomes.contains(biome)) {
 			if (deniedBiomes.isPresent() && this.deniedBiomes.get().contains(biome)) {
 				return;

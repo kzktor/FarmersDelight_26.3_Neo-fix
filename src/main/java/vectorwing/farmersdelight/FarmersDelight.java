@@ -35,7 +35,9 @@ public class FarmersDelight
 			modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		}
 
-		modContainer.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
+		// FML 12(NeoForge 26.3) 把 ModConfig.Type 的 COMMON 改名成了 LOCAL（SERVER→SYNCED，CLIENT 不变）。
+		// 这份移植版原来只对着 26.3.0.0/0.3-beta 编过，改名发生在那之后。
+		modContainer.registerConfig(ModConfig.Type.LOCAL, Configuration.COMMON_CONFIG);
 		modContainer.registerConfig(ModConfig.Type.CLIENT, Configuration.CLIENT_CONFIG);
 
 		ModSounds.SOUNDS.register(modEventBus);
